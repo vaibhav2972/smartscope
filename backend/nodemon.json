@@ -1,0 +1,24 @@
+{
+	"watch": [
+		"index.js",
+		"app.js",
+		"db.js",
+		"routes/",
+		"controllers/",
+		"middlewares/",
+		"models/",
+		"config/",
+		"utils/"
+	],
+	"ignore": [
+		"tmp/*",
+		"node_modules/*",
+		"*.log",
+		"package.json",
+		"package-lock.json",
+		"**/package-lock.json",
+		"**/node_modules/**"
+	],
+	"ext": "js",
+	"delay": 2000
+}
