@@ -567,7 +567,7 @@ const EcommerceContent = ({ websiteId }) => {
 				)}
 			</div>
 
-		
+			
 			{cart.length > 0 && (
 				<div className="fixed bottom-0 right-0 m-4 bg-gray-900 border border-gray-800 rounded-2xl shadow-2xl p-6 max-w-sm w-full max-h-96 overflow-y-auto">
 					<div className="flex items-center justify-between mb-4">

@@ -43,10 +43,11 @@ const websiteSchema = new mongoose.Schema(
 			
 			entityTypes: [
 				{
-					name: String,
-					displayName: String,
+					name: String, 
+					displayName: String, 
 					fields: {
 						type: mongoose.Schema.Types.Mixed,
+						
 					},
 				},
 			],
@@ -55,9 +56,12 @@ const websiteSchema = new mongoose.Schema(
 			conversionEvents: {
 				type: [String],
 				default: [],
+				
+				
+				
 			},
 
-
+			
 			trackingSettings: {
 				type: mongoose.Schema.Types.Mixed,
 				default: {},

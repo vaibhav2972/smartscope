@@ -5,7 +5,6 @@ export const useInteractionTracker = () => {
 	const { trackInteraction } = useInteraction();
 	const lastScrollDepth = useRef(0);
 
-	
 	const trackClick = (
 		elementId,
 		elementType,
@@ -26,7 +25,6 @@ export const useInteractionTracker = () => {
 		});
 	};
 
-	
 	const trackPageView = (pageName) => {
 		trackInteraction({
 			interactionType: "view",
@@ -36,7 +34,6 @@ export const useInteractionTracker = () => {
 		});
 	};
 
-	
 	const trackScrollDepth = () => {
 		const scrollDepth = Math.round(
 			(window.scrollY /
@@ -54,7 +51,6 @@ export const useInteractionTracker = () => {
 		}
 	};
 
-	
 	const trackItemView = (item) => {
 		trackInteraction({
 			interactionType: "product_view",
@@ -68,7 +64,6 @@ export const useInteractionTracker = () => {
 		});
 	};
 
-	
 	const trackAddToCart = (item) => {
 		trackInteraction({
 			interactionType: "add_to_cart",
@@ -85,7 +80,6 @@ export const useInteractionTracker = () => {
 		});
 	};
 
-	
 	const trackSearch = (query, resultsCount) => {
 		trackInteraction({
 			interactionType: "search",
@@ -95,7 +89,6 @@ export const useInteractionTracker = () => {
 		});
 	};
 
-	
 	useEffect(() => {
 		const handleScroll = () => trackScrollDepth();
 		window.addEventListener("scroll", handleScroll);

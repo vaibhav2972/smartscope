@@ -1,3 +1,4 @@
+
 import { Github, Twitter, Linkedin, Globe } from "lucide-react";
 
 const Footer = () => {
@@ -50,7 +51,7 @@ const Footer = () => {
 					</ul>
 				</div>
 
-				
+			
 				<div>
 					<h3 className="text-lg font-semibold mb-4 text-white">Connect</h3>
 					<div className="flex space-x-4">
@@ -78,7 +79,7 @@ const Footer = () => {
 
 			
 			<div className="relative mt-12 pt-6 text-center text-gray-500 text-sm z-10">
-				
+			
 				<div className="absolute top-0 left-0 w-full h-0.5 bg-linear-to-r from-cyan-400 via-indigo-500 to-pink-500 animate-pulse"></div>
 				<p className="relative z-10">
 					© {new Date().getFullYear()} SmartScope. All rights reserved.

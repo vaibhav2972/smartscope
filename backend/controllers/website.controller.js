@@ -1,5 +1,6 @@
 import { Website } from "../models/website.model.js";
 
+
 export const getAllWebsites = async (req, res) => {
 	try {
 		const websites = await Website.find({ isActive: true });
@@ -15,6 +16,7 @@ export const getAllWebsites = async (req, res) => {
 		});
 	}
 };
+
 
 export const getWebsiteById = async (req, res) => {
 	try {
@@ -40,6 +42,7 @@ export const getWebsiteById = async (req, res) => {
 		});
 	}
 };
+
 
 export const createWebsite = async (req, res) => {
 	try {

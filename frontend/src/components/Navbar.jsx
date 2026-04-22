@@ -46,7 +46,6 @@ const Navbar = () => {
 		{ name: "Contact", link: "/contact" },
 	];
 
-	
 	if (user) {
 		navItems.splice(2, 0, { name: "Demo", link: "/demo" });
 	}
@@ -119,6 +118,15 @@ const Navbar = () => {
 										>
 											Profile
 										</Link>
+										{user?.role === "admin" && (
+											<Link
+												to="/analytics"
+												onClick={() => setDropdownOpen(false)}
+												className="block px-4 py-2 text-gray-200 hover:bg-cyan-500/10 rounded-lg transition"
+											>
+												Analytics Portal
+											</Link>
+										)}
 										{user && (
 											<Link
 												to="/demo"

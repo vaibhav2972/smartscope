@@ -265,7 +265,7 @@ const SocialMediaContent = ({ websiteId }) => {
 						<button
 							onClick={async () => {
 								trackClick("back-button", "button", "Back to Demo Selection");
-								
+							
 								if (currentSession) {
 									await endSession("/demo/social");
 								}
@@ -339,7 +339,7 @@ const SocialMediaContent = ({ websiteId }) => {
 							key={post.id}
 							className="bg-gray-900 border border-gray-800 rounded-2xl p-6 shadow-lg hover:border-gray-700 transition"
 						>
-							
+						
 							<div className="flex items-start justify-between mb-4">
 								<div className="flex items-center gap-3">
 									<div className="text-4xl">{post.avatar}</div>
@@ -390,7 +390,7 @@ const SocialMediaContent = ({ websiteId }) => {
 								</span>
 							</div>
 
-							
+						
 							<div className="grid grid-cols-4 gap-2">
 								<button
 									onClick={() => handleLike(post.id)}

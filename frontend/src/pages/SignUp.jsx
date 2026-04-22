@@ -134,7 +134,7 @@ const SignUp = () => {
 
         {!showOtp ? (
           <>
-            
+          
             <div className="mb-4">
               <label className="block text-sm text-gray-400 mb-2">Username</label>
               <input
@@ -162,7 +162,7 @@ const SignUp = () => {
               />
             </div>
 
-            
+           
             <div className="mb-6">
               <label className="block text-sm text-gray-400 mb-2">Password</label>
               <input
@@ -176,7 +176,7 @@ const SignUp = () => {
               />
             </div>
 
-            
+           
             <button
               onClick={handleSubmit}
               disabled={loading}
@@ -199,7 +199,7 @@ const SignUp = () => {
           </>
         ) : (
           <div className="mb-6">
-            
+         
             <label className="block text-sm text-gray-400 mb-2">Enter OTP</label>
             <input
               type="text"
@@ -209,7 +209,7 @@ const SignUp = () => {
               className="w-full px-4 py-3 rounded-xl bg-[#0B1220] border border-gray-700 text-gray-100 focus:ring-2 focus:ring-cyan-400 outline-none placeholder-gray-500 transition-all duration-200 hover:border-cyan-400"
             />
 
-            
+          
             <button
               onClick={handleVerifyOtp}
               disabled={loading}
@@ -218,7 +218,6 @@ const SignUp = () => {
               Verify OTP
             </button>
 
-            
             <button
               onClick={handleResendOtp}
               disabled={loading}
@@ -229,12 +228,10 @@ const SignUp = () => {
           </div>
         )}
 
-        
         {status && (
           <p className="mt-4 text-center text-sm text-gray-300">{status}</p>
         )}
 
-        
         <p className="mt-6 text-center text-sm text-gray-400">
           Already have an account?{" "}
           <Link to="/login" className="text-cyan-400 hover:underline">
@@ -242,7 +239,6 @@ const SignUp = () => {
           </Link>
         </p>
 
-        
         <div className="relative my-6">
           <div className="absolute inset-0 flex items-center">
             <div className="w-full border-t border-gray-700"></div>
@@ -252,7 +248,6 @@ const SignUp = () => {
           </div>
         </div>
 
-        
         <button
           type="button"
           onClick={handleGoogleSignUp}

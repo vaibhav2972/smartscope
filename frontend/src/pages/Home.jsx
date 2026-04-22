@@ -94,7 +94,7 @@ const Home = () => {
 					
 					<div className="grid grid-cols-3 gap-8 mt-20 max-w-3xl mx-auto">
 						<div className="text-center">
-							<p className="text-4xl font-bold text-cyan-400 mb-2">4+</p>
+							<p className="text-4xl font-bold text-cyan-400 mb-2">3+</p>
 							<p className="text-gray-400">Demo Platforms</p>
 						</div>
 						<div className="text-center">
@@ -102,7 +102,7 @@ const Home = () => {
 							<p className="text-gray-400">ML Algorithms</p>
 						</div>
 						<div className="text-center">
-							<p className="text-4xl font-bold text-blue-400 mb-2">Real-time</p>
+							<p className="text-4xl font-bold text-blue-400 mb-2">Detailed</p>
 							<p className="text-gray-400">Analysis</p>
 						</div>
 					</div>

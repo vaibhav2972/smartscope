@@ -9,7 +9,6 @@ export const InteractionProvider = ({ children, websiteId }) => {
 	const interactionQueue = useRef([]);
 	const flushInterval = useRef(null);
 
-	
 	const trackInteraction = (interactionData) => {
 		if (!currentSession || !websiteId) return;
 
@@ -27,13 +26,11 @@ export const InteractionProvider = ({ children, websiteId }) => {
 
 		interactionQueue.current.push(interaction);
 
-		
 		if (interactionQueue.current.length >= 10) {
 			flushInteractions();
 		}
 	};
 
-	
 	const flushInteractions = async () => {
 		if (interactionQueue.current.length === 0) return;
 
@@ -49,7 +46,6 @@ export const InteractionProvider = ({ children, websiteId }) => {
 		}
 	};
 
-	
 	useEffect(() => {
 		flushInterval.current = setInterval(flushInteractions, 5000);
 

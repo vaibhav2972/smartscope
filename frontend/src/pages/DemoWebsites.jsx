@@ -37,15 +37,15 @@ const DemoWebsites = () => {
 			color: "from-green-500 to-teal-500",
 			route: "/demo/blog",
 		},
-		// {
-		// 	id: "dashboard",
-		// 	name: "DataDash",
-		// 	description:
-		// 		"Analytics dashboard with charts, metrics, and data visualization",
-		// 	icon: BarChart3,
-		// 	color: "from-orange-500 to-red-500",
-		// 	route: "/demo/dashboard",
-		// },
+		{
+			id: "dashboard",
+			name: "DataDash",
+			description:
+				"Analytics dashboard with charts, metrics, and data visualization",
+			icon: BarChart3,
+			color: "from-orange-500 to-red-500",
+			route: "/demo/dashboard",
+		},
 	];
 
 	if (loading) {
@@ -62,7 +62,7 @@ const DemoWebsites = () => {
 
 			<div className="pt-24 pb-16 px-4 sm:px-6 lg:px-8">
 				<div className="max-w-7xl mx-auto">
-					
+				
 					<div className="text-center mb-16">
 						<h1 className="text-5xl md:text-6xl font-extrabold mb-4 bg-linear-to-r from-cyan-400 via-blue-500 to-purple-500 bg-clip-text text-transparent">
 							Choose Your Experience

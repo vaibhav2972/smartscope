@@ -18,11 +18,15 @@ const interactionSchema = new mongoose.Schema(
 			required: true,
 		},
 
+		
 		interactionType: {
 			type: String,
 			required: true,
+			
+			
 		},
 
+		
 		actionCategory: {
 			type: String,
 			enum: [
@@ -70,14 +74,20 @@ const interactionSchema = new mongoose.Schema(
 			type: Number,
 		},
 
+		
 		entityData: {
 			entityType: String, 
 			entityId: String,
 			entityName: String,
 
+			
 			attributes: {
 				type: mongoose.Schema.Types.Mixed,
 				default: {},
+				
+				
+				
+				
 			},
 		},
 
@@ -104,9 +114,11 @@ const interactionSchema = new mongoose.Schema(
 			type: String,
 		},
 
+		
 		customData: {
 			type: mongoose.Schema.Types.Mixed,
 			default: {},
+			
 		},
 
 		metadata: {
@@ -116,6 +128,7 @@ const interactionSchema = new mongoose.Schema(
 	},
 	{ timestamps: true },
 );
+
 
 interactionSchema.index({ userId: 1, timestamp: -1 });
 interactionSchema.index({ sessionId: 1, timestamp: 1 });

@@ -346,7 +346,6 @@ const DashboardContent = ({ websiteId }) => {
 					</button>
 				</div>
 
-				
 				<div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
 					{metrics.map((metric) => {
 						const Icon = metric.icon;
@@ -383,7 +382,6 @@ const DashboardContent = ({ websiteId }) => {
 					})}
 				</div>
 
-				
 				<div className="grid lg:grid-cols-2 gap-6 mb-8">
 					
 					<div className="bg-gray-900 border border-gray-800 rounded-2xl p-6">

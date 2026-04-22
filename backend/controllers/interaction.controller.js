@@ -80,7 +80,7 @@ export const trackInteraction = async (req, res) => {
 			timestamp: new Date(),
 		});
 
-		// Auto-update session metrics
+		
 		await updateSessionFromInteraction(sessionId, {
 			pageUrl,
 			scrollDepth,
@@ -101,6 +101,7 @@ export const trackInteraction = async (req, res) => {
 		});
 	}
 };
+
 
 const updateSessionFromInteraction = async (
 	sessionId,
@@ -139,6 +140,7 @@ const updateSessionFromInteraction = async (
 	}
 };
 
+
 const getConversionEvent = (interactionType) => {
 	const conversionMap = {
 		add_to_cart: "add_to_cart",
@@ -149,6 +151,7 @@ const getConversionEvent = (interactionType) => {
 	};
 	return conversionMap[interactionType] || null;
 };
+
 
 export const trackBulkInteractions = async (req, res) => {
 	try {
@@ -170,7 +173,7 @@ export const trackBulkInteractions = async (req, res) => {
 
 		const result = await Interaction.insertMany(interactionsWithUser);
 
-		// Update session metrics for all interactions
+		
 		const sessionUpdates = {};
 		for (const interaction of interactions) {
 			if (!sessionUpdates[interaction.sessionId]) {
@@ -194,7 +197,7 @@ export const trackBulkInteractions = async (req, res) => {
 			if (conv) update.conversions.add(conv);
 		}
 
-		// Apply updates
+		
 		for (const [sessionId, updates] of Object.entries(sessionUpdates)) {
 			const session = await Session.findById(sessionId);
 			if (session) {
@@ -239,6 +242,7 @@ export const trackBulkInteractions = async (req, res) => {
 		});
 	}
 };
+
 
 export const getUserInteractions = async (req, res) => {
 	try {
@@ -292,6 +296,7 @@ export const getUserInteractions = async (req, res) => {
 	}
 };
 
+
 export const getInteractionStats = async (req, res) => {
 	try {
 		const userId = req.user._id;
@@ -306,7 +311,7 @@ export const getInteractionStats = async (req, res) => {
 			if (endDate) matchQuery.timestamp.$lte = new Date(endDate);
 		}
 
-		// Get interaction counts by type
+		
 		const byType = await Interaction.aggregate([
 			{ $match: matchQuery },
 			{
@@ -318,7 +323,7 @@ export const getInteractionStats = async (req, res) => {
 			{ $sort: { count: -1 } },
 		]);
 
-		// Get interaction timeline (hourly)
+		
 		const timeline = await Interaction.aggregate([
 			{ $match: matchQuery },
 			{
@@ -338,7 +343,7 @@ export const getInteractionStats = async (req, res) => {
 			{ $sort: { "_id.date": 1, "_id.hour": 1 } },
 		]);
 
-		// Get most interacted pages
+		
 		const topPages = await Interaction.aggregate([
 			{ $match: matchQuery },
 			{
@@ -379,6 +384,7 @@ export const getInteractionStats = async (req, res) => {
 	}
 };
 
+
 export const getItemAnalytics = async (req, res) => {
 	try {
 		const userId = req.user._id;
@@ -392,10 +398,10 @@ export const getItemAnalytics = async (req, res) => {
 		if (websiteId)
 			matchQuery.websiteId = new mongoose.Types.ObjectId(websiteId);
 
-		// // Optional entity type filter
-		// if (entityType) {
-		// 	matchQuery["entityData.entityType"] = entityType;
-		// }
+		
+		
+		
+		
 
 		if (startDate || endDate) {
 			matchQuery.timestamp = {};
@@ -474,6 +480,7 @@ export const getItemAnalytics = async (req, res) => {
 	}
 };
 
+
 export const getSearchAnalytics = async (req, res) => {
 	try {
 		const userId = req.user._id;
@@ -520,6 +527,7 @@ export const getSearchAnalytics = async (req, res) => {
 	}
 };
 
+
 export const getUserBehaviorFlow = async (req, res) => {
 	try {
 		const userId = req.user._id;
@@ -542,7 +550,7 @@ export const getUserBehaviorFlow = async (req, res) => {
 			.sort({ timestamp: 1 })
 			.select("pageUrl pageName timestamp");
 
-		// Build flow sequence
+		
 		const flow = interactions.map((int, index) => ({
 			step: index + 1,
 			page: int.pageName || int.pageUrl,

@@ -31,6 +31,7 @@ import google_authRouter from "./routes/google_auth.routes.js";
 import websiteRouter from "./routes/website.routes.js";
 import sessionRouter from "./routes/session.routes.js";
 import interactionRouter from "./routes/interaction.routes.js";
+import analyticsRouter from "./routes/analytics.route.js";
 
 
 app.use("/api/auth", google_authRouter);
@@ -40,6 +41,7 @@ app.use("/api/user", userRouter);
 app.use("/api/websites", websiteRouter);
 app.use("/api/sessions", sessionRouter);
 app.use("/api/interactions", interactionRouter);
+app.use("/api/analytics", analyticsRouter);
 
 app.get("/", (req, res) => {
 	res.send("SmartScope API is running");

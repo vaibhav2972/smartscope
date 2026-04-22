@@ -1,13 +1,14 @@
 import { Session } from "../models/session.model.js";
 import { Interaction } from "../models/interaction.model.js";
 
+
 export const startSession = async (req, res) => {
 	try {
 		const userId = req.user._id;
 		const { websiteId, deviceInfo, ipAddress, location, referralSource } =
 			req.body;
 
-		// Check if there's an active session for this website
+		
 		const existingSession = await Session.findOne({
 			userId,
 			websiteId,
@@ -22,7 +23,7 @@ export const startSession = async (req, res) => {
 			});
 		}
 
-		// Determine device type from user agent
+		
 		let deviceType = "desktop";
 		if (deviceInfo?.userAgent) {
 			if (/mobile/i.test(deviceInfo.userAgent)) deviceType = "mobile";
@@ -64,6 +65,7 @@ export const startSession = async (req, res) => {
 	}
 };
 
+
 export const updateSessionMetrics = async (req, res) => {
 	try {
 		const { sessionId } = req.params;
@@ -85,28 +87,28 @@ export const updateSessionMetrics = async (req, res) => {
 			});
 		}
 
-		// Update total interactions
+		
 		session.totalInteractions += 1;
 
-		// Update interaction type counters
+		
 		if (interactionType === "click") {
 			session.totalClicks += 1;
 		} else if (interactionType === "scroll") {
 			session.totalScrolls += 1;
 		}
 
-		// Update page visits
+		
 		if (pageUrl && !session.uniquePagesVisited.includes(pageUrl)) {
 			session.uniquePagesVisited.push(pageUrl);
 			session.pagesVisited += 1;
 		}
 
-		// Update max scroll depth
+		
 		if (scrollDepth && scrollDepth > session.maxScrollDepth) {
 			session.maxScrollDepth = scrollDepth;
 		}
 
-		// Track conversion events
+		
 		if (
 			conversionEvent &&
 			!session.conversionEvents.includes(conversionEvent)
@@ -115,11 +117,11 @@ export const updateSessionMetrics = async (req, res) => {
 			session.hasConversion = true;
 		}
 
-		// Update exit behavior
+		
 		if (exitPage) session.exitPage = exitPage;
 		if (exitIntent !== undefined) session.exitIntent = exitIntent;
 
-		// Check for bounce (less than 30 seconds, only 1 page)
+		
 		const currentDuration = (new Date() - session.sessionStart) / 1000;
 		if (currentDuration < 30 && session.pagesVisited <= 1) {
 			session.bounceRate = true;
@@ -140,6 +142,7 @@ export const updateSessionMetrics = async (req, res) => {
 		});
 	}
 };
+
 
 export const endSession = async (req, res) => {
 	try {
@@ -165,7 +168,7 @@ export const endSession = async (req, res) => {
 		if (exitPage) session.exitPage = exitPage;
 		if (exitIntent !== undefined) session.exitIntent = exitIntent;
 
-		// Final bounce check
+		
 		if (duration < 30 && session.pagesVisited <= 1) {
 			session.bounceRate = true;
 		}
@@ -185,6 +188,7 @@ export const endSession = async (req, res) => {
 		});
 	}
 };
+
 
 export const getUserSessions = async (req, res) => {
 	try {
@@ -208,7 +212,7 @@ export const getUserSessions = async (req, res) => {
 
 		const total = await Session.countDocuments(query);
 
-		// Calculate aggregate stats
+		
 		const stats = await Session.aggregate([
 			{ $match: query },
 			{
@@ -246,6 +250,7 @@ export const getUserSessions = async (req, res) => {
 	}
 };
 
+
 export const getActiveSession = async (req, res) => {
 	try {
 		const userId = req.user._id;
@@ -268,6 +273,7 @@ export const getActiveSession = async (req, res) => {
 		});
 	}
 };
+
 
 export const getSessionAnalyticsByWebsite = async (req, res) => {
 	try {
@@ -352,6 +358,7 @@ export const getSessionAnalyticsByWebsite = async (req, res) => {
 	}
 };
 
+
 export const getSessionDetails = async (req, res) => {
 	try {
 		const { sessionId } = req.params;
@@ -365,7 +372,7 @@ export const getSessionDetails = async (req, res) => {
 			});
 		}
 
-		// Get all interactions for this session
+		
 		const interactions = await Interaction.find({ sessionId }).sort({
 			timestamp: 1,
 		});

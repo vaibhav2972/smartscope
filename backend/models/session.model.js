@@ -25,6 +25,7 @@ const sessionSchema = new mongoose.Schema(
 			default: 0,
 		},
 
+		
 		totalInteractions: {
 			type: Number,
 			default: 0,
@@ -46,6 +47,7 @@ const sessionSchema = new mongoose.Schema(
 			default: [],
 		},
 
+		
 		maxScrollDepth: {
 			type: Number,
 			default: 0,
@@ -55,7 +57,7 @@ const sessionSchema = new mongoose.Schema(
 			default: false,
 		},
 
-
+		
 		conversionEvents: {
 			type: [String], 
 			default: [],
@@ -87,7 +89,7 @@ const sessionSchema = new mongoose.Schema(
 			type: String,
 		},
 
-	
+		
 		location: {
 			country: String,
 			city: String,
@@ -96,7 +98,7 @@ const sessionSchema = new mongoose.Schema(
 
 		
 		referralSource: {
-			type: String,
+			type: String, 
 		},
 
 		isActive: {
@@ -106,6 +108,7 @@ const sessionSchema = new mongoose.Schema(
 	},
 	{ timestamps: true },
 );
+
 
 sessionSchema.index({ userId: 1, websiteId: 1, sessionStart: -1 });
 sessionSchema.index({ hasConversion: 1 }); 

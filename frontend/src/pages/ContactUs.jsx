@@ -42,7 +42,7 @@ const ContactUs = () => {
         },
         (error) => {
           console.error("EmailJS Error:", error);
-          toast.error("Failed to send message. Please try again 😢", {
+          toast.error("Failed to send message. Please try again ", {
             id: "contact-toast",
           });
           setLoading(false);
@@ -58,7 +58,7 @@ const ContactUs = () => {
 			<div className="absolute top-0 left-0 w-72 h-72 bg-cyan-500/20 rounded-full blur-3xl animate-pulse"></div>
 			<div className="absolute bottom-0 right-0 w-96 h-96 bg-pink-500/20 rounded-full blur-3xl animate-pulse"></div>
 
-			
+		
 			{[...Array(12)].map((_, i) => (
 				<div
 					key={i}
@@ -70,7 +70,7 @@ const ContactUs = () => {
 				></div>
 			))}
 
-			
+		
 			<div className="relative z-10 max-w-6xl w-full text-center mb-16">
 				<h1 className="text-5xl md:text-6xl font-extrabold mb-4 bg-linear-to-r from-cyan-400 via-indigo-500 to-pink-500 bg-clip-text text-transparent">
 					Contact Us
@@ -81,7 +81,7 @@ const ContactUs = () => {
 				</p>
 			</div>
 
-			
+		
 			<div className="relative z-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 mb-16 w-full max-w-6xl">
 				{[
 					{
@@ -116,7 +116,7 @@ const ContactUs = () => {
 				))}
 			</div>
 
-			
+		
 			<form
 				ref={formRef}
 				onSubmit={handleSubmit}
@@ -156,7 +156,7 @@ const ContactUs = () => {
 					></textarea>
 				</div>
 
-				
+			
 				<input type="hidden" name="date" value={new Date().toLocaleString()} />
 
 				<button

@@ -67,7 +67,6 @@ export const SessionProvider = ({ children }) => {
 		}
 	};
 
-	
 	useEffect(() => {
 		const handleBeforeUnload = () => {
 			if (currentSession) {

@@ -22,7 +22,7 @@ export const sessionService = {
 		return response.data;
 	},
 
-
+	
 	getActiveSession: async (websiteId) => {
 		const response = await api.get(`/sessions/active?websiteId=${websiteId}`);
 		return response.data;

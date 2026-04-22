@@ -1,3 +1,4 @@
+
 import pandas as pd
 import numpy as np
 from config import config
@@ -5,7 +6,6 @@ from config import config
 class EngagementScorer:
     
     def __init__(self):
-       
         self.weights = config.ENGAGEMENT_WEIGHTS
     
     def calculate_score(self, user_data):
@@ -17,9 +17,9 @@ class EngagementScorer:
         
         duration_score = df['total_duration'] * self.weights['duration']
         
-        page_score = df.get('avg_pages', 0) * self.weights['pages']
+        page_score = df.get('avg_pages', pd.Series([0] * len(df))) * self.weights['pages']
         
-        conversion_score = df.get('conversion_count', 0) * self.weights['conversions']
+        conversion_score = df.get('conversion_count', pd.Series([0] * len(df))) * self.weights['conversions']
         
         bounce_penalty = df['bounce_rate'] * self.weights['bounce_penalty']
         
@@ -35,7 +35,7 @@ class EngagementScorer:
         if total_score.max() > 0:
             normalized_score = (total_score / total_score.max()) * 100
         else:
-            normalized_score = 0
+            normalized_score = pd.Series([0] * len(df))
         
         normalized_score = normalized_score.clip(0, 100)
         
@@ -50,12 +50,12 @@ class EngagementScorer:
         
         results['grade'] = results['engagement_score'].apply(self._assign_grade)
         
-        results['rank'] = results['engagement_score'].rank(ascending=False, method='min')
+        results['rank'] = results['engagement_score'].rank(ascending=False, method='min').astype(int)
         
         results['percentile'] = results['engagement_score'].rank(pct=True) * 100
         results['percentile'] = results['percentile'].round(2)
         
-        results = results.sort_values('engagement_score', ascending=False)
+        results = results.sort_values('engagement_score', ascending=False).reset_index(drop=True)
         
         return results
     
@@ -72,6 +72,7 @@ class EngagementScorer:
             return 'F'
     
     def get_user_score(self, user_id, scores_df):
+        
         user_score = scores_df[scores_df['userId'] == user_id]
         
         if user_score.empty:
@@ -98,6 +99,7 @@ class EngagementScorer:
         }
     
     def get_leaderboard(self, scores_df, top_n=10):
+        
         top_users = scores_df.head(top_n)
         
         leaderboard = []
@@ -106,23 +108,27 @@ class EngagementScorer:
                 'user_id': user['userId'],
                 'score': float(user['engagement_score']),
                 'grade': user['grade'],
-                'rank': int(user['rank'])
+                'rank': int(user['rank']),
+                'percentile': float(user['percentile'])
             })
         
         return leaderboard
     
     def get_score_distribution(self, scores_df):
+        
         return {
             'total_users': len(scores_df),
             'average_score': float(scores_df['engagement_score'].mean().round(2)),
             'median_score': float(scores_df['engagement_score'].median().round(2)),
             'min_score': float(scores_df['engagement_score'].min().round(2)),
             'max_score': float(scores_df['engagement_score'].max().round(2)),
+            'std_deviation': float(scores_df['engagement_score'].std().round(2)),
             'grade_distribution': scores_df['grade'].value_counts().to_dict()
         }
 
 
 def calculate_engagement_scores(user_df):
+    
     scorer = EngagementScorer()
     scores = scorer.calculate_score(user_df)
     return scores
