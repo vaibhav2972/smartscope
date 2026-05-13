@@ -21,7 +21,7 @@ class EngagementScorer:
         
         conversion_score = df.get('conversion_count', pd.Series([0] * len(df))) * self.weights['conversions']
         
-        bounce_penalty = df['bounce_rate'] * self.weights['bounce_penalty']
+        bounce_penalty = (df['bounce_rate'] / 100) * self.weights['bounce_penalty']
         
         total_score = (
             session_score +

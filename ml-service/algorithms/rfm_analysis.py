@@ -102,11 +102,12 @@ class RFMAnalyzer:
         elif r >= 3 and f >= 2:
             return "Potential Loyalists"
         
+        elif r <= 2 and f <= 2:
+            return "Lost Customers"
+        
         elif r <= 2:
             return "At Risk"
         
-        elif r <= 2 and f <= 2:
-            return "Lost Customers"
         
         else:
             return "Other"

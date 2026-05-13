@@ -7,7 +7,7 @@ from data.data_loader import DataLoader
 from data.preprocessor import DataPreprocessor
 from algorithms.clustering import UserSegmentation
 from algorithms.scoring import EngagementScorer
-from algorithms.recommendations import CollaborativeRecommender
+from algorithms.recommendations import CollaborativeRecommender, generate_recommendations
 from algorithms.churn_prediction import ChurnPredictor
 from algorithms.rfm_analysis import RFMAnalyzer
 from algorithms.user_lifecycle import UserLifecycleAnalyzer
@@ -298,17 +298,7 @@ def get_recommendations():
             lambda x: x.get('entityName') if isinstance(x, dict) else None
         )
         
-        recommender = CollaborativeRecommender()
-        matrix = recommender.create_user_item_matrix(interactions_df, entity_type)
-        
-        if matrix is None or matrix.empty:
-            return jsonify({
-                'success': False,
-                'message': 'Not enough interaction data for recommendations'
-            }), 400
-        
-        recommender.calculate_user_similarity()
-        result = recommender.get_recommendations(user_id, top_n=top_n)
+        result = generate_recommendations(interactions_df, user_id, entity_type=entity_type, top_n=top_n, include_evaluation=True)
         
         return jsonify(result), 200
         
@@ -388,9 +378,9 @@ def predict_churn():
         predictor = ChurnPredictor()
         results = predictor.get_churn_risk(user_df)
         
-        if results.get('success'):
-            for pred in results.get('predictions', []):
-                pred['interpretation'] = _interpret_churn(pred)
+        # if results.get('success'):
+        #     for pred in results.get('predictions', []):
+        #         pred['interpretation'] = _interpret_churn(pred)
         
         return jsonify(results), 200
         
@@ -411,7 +401,6 @@ def _interpret_churn(prediction):
         return f"Some warning signs (inactive {days} days, monitor closely)"
     else:
         return f"User appears stable (active engagement pattern)"
-
 
 
 @app.route('/api/ml/rfm-analysis', methods=['POST'])

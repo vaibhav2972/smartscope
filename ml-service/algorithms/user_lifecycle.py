@@ -1,7 +1,6 @@
 
 import pandas as pd
-import numpy as np
-from datetime import datetime, timedelta
+from datetime import datetime
 
 class UserLifecycleAnalyzer:
     
@@ -41,60 +40,66 @@ class UserLifecycleAnalyzer:
         }
     
     def _determine_stage(self, user):
-        
-        days_inactive = user.get('days_since_last_session', 0)
-        total_sessions = user.get('total_sessions', 0)
-        avg_duration = user.get('avg_duration', 0)
-        
-        if days_inactive > 30:
+
+        days_inactive = int(user.get('days_since_last_session', 0))
+        total_sessions = int(user.get('total_sessions', 0))
+        avg_duration = float(user.get('avg_duration', 0) or 0)
+
+        # 1. CHURNED (hard cutoff)
+        if days_inactive >= 45:
             return {
                 'stage': 'Churned',
                 'trend': 'Declined',
                 'action': 'Win-back campaign with strong incentive'
             }
-        
-        elif days_inactive > 15:
-            return {
-                'stage': 'At Risk',
-                'trend': 'Declining',
-                'action': 'Re-engagement campaign, personalized offers'
-            }
-        
-        elif total_sessions > 20 and avg_duration > 300:
+
+        # 2. POWER USER (protect high value users even if slightly inactive)
+        if total_sessions >= 25 and avg_duration > 300 and days_inactive <= 30:
             return {
                 'stage': 'Power User',
                 'trend': 'Growing',
                 'action': 'VIP treatment, loyalty rewards, beta access'
             }
-        
-        elif total_sessions >= 5 and days_inactive <= 7:
+
+        # 3. DECLINING USER (needs behavioral drop detection)
+        if 10 <= total_sessions < 25 and 15 < days_inactive <= 40:
+            return {
+                'stage': 'Declining User',
+                'trend': 'Declining',
+                'action': 'Reactivation + feature highlights'
+            }
+
+        # 4. ACTIVE USER
+        if total_sessions >= 5 and days_inactive <= 10:
             return {
                 'stage': 'Active User',
                 'trend': 'Stable',
                 'action': 'Maintain engagement, upsell opportunities'
             }
-        
-        elif total_sessions < 3:
+
+        # 5. NEW USER
+        if total_sessions < 5:
             return {
                 'stage': 'New User',
                 'trend': 'Onboarding',
                 'action': 'Onboarding flow, feature education'
             }
-        
-        elif total_sessions >= 5 and days_inactive > 7:
-            return {
-                'stage': 'Declining User',
-                'trend': 'Declining',
-                'action': 'Identify pain points, provide support'
-            }
-        
-        else:
+
+        # 6. CASUAL USER
+        if 5 <= total_sessions < 15 and days_inactive <= 30:
             return {
                 'stage': 'Casual User',
                 'trend': 'Stable',
                 'action': 'Encourage more frequent usage'
             }
-    
+
+        # 7. ONLY NOW fallback to At Risk
+        return {
+            'stage': 'At Risk',
+            'trend': 'Warning',
+            'action': 'Re-engagement campaign, personalized offers'
+        }
+
     def _calculate_days_since_signup(self, user):
         
         if 'createdAt' in user and pd.notna(user['createdAt']):

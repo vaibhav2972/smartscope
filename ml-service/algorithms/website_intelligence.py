@@ -13,7 +13,7 @@ class WebsiteIntelligenceAnalyzer:
 
         results = []
 
-        for site, m in zip(websites_data, norm):
+        for i, (site, m) in enumerate(zip(websites_data, norm)):
 
             score = self._score(m)
 
@@ -21,7 +21,7 @@ class WebsiteIntelligenceAnalyzer:
                 "website_id": site.get("website_id"),
                 "website_name": site.get("website_name"),
                 "score": score,
-                "insights": self._human_story(m, norm)
+                "insights": self._human_story(raw[i], raw) 
             })
 
         results.sort(key=lambda x: x["score"], reverse=True)
@@ -50,16 +50,19 @@ class WebsiteIntelligenceAnalyzer:
         return {"a": a, "b": b, "c": c, "d": d}
 
     def _normalize(self, data):
-
         keys = data[0].keys()
         out = [{} for _ in data]
 
         for k in keys:
-            vals = np.array([x[k] for x in data])
-            norm = (vals - vals.min()) / (vals.max() - vals.min() + 1e-9)
+            vals = np.array([x[k] for x in data], dtype=float)
 
-            for i in range(len(data)):
-                out[i][k] = float(norm[i])
+            # real percentile rank
+            order = vals.argsort()
+            ranks = np.empty_like(order, dtype=float)
+            ranks[order] = np.linspace(0, 1, len(vals))
+
+            for i in range(len(vals)):
+                out[i][k] = float(ranks[i])
 
         return out
 
@@ -70,7 +73,7 @@ class WebsiteIntelligenceAnalyzer:
 
         def rank(key):
             arr = [x[key] for x in all_data]
-            return np.mean(np.array(arr) < m[key])
+            return (np.array(arr) < m[key]).mean()
 
         a = rank("a")
         b = rank("b")
@@ -79,37 +82,37 @@ class WebsiteIntelligenceAnalyzer:
 
         story = []
 
-        # 1. Attention pattern
-        if a > 0.75:
+        # Attention
+        if a >= 0.75:
             story.append("People tend to stay and explore for a long time here.")
-        elif a < 0.25:
+        elif a <= 0.25:
             story.append("People lose interest quite quickly after arriving.")
         else:
             story.append("People's attention is fairly average here.")
 
-        # 2. Return behavior
-        if b > 0.75:
+        # Return
+        if b >= 0.75:
             story.append("Many visitors come back again after their first visit.")
-        elif b < 0.25:
+        elif b <= 0.25:
             story.append("Most visitors do not return after leaving.")
         else:
-            story.append("Return behavior is neither strong nor weak.")
+            story.append("Return behavior is weak or inconsistent.")
 
-        # 3. Action completion
-        if c > 0.75:
+        # Conversion
+        if c >= 0.75:
             story.append("Visitors often complete what they came to do.")
-        elif c < 0.25:
+        elif c <= 0.25:
             story.append("Visitors rarely finish meaningful actions here.")
         else:
-            story.append("Completion behavior is inconsistent.")
+            story.append("Completion behavior varies across users.")
 
-        # 4. Exploration
-        if d > 0.75:
+        # Exploration
+        if d >= 0.75:
             story.append("People explore many parts of the platform.")
-        elif d < 0.25:
+        elif d <= 0.25:
             story.append("Most users only view a small portion of the platform.")
         else:
-            story.append("Exploration is moderate.")
+            story.append("Exploration is moderate across users.")
 
         return story
 

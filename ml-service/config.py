@@ -25,7 +25,7 @@ class Config:
         'duration': 0.1,
         'pages': 1,
         'conversions': 20,
-        'bounce_penalty': -10
+        'bounce_penalty': -5
     }
     
     TOP_N_SIMILAR_USERS = 10

@@ -33,7 +33,7 @@ class CollaborativeRecommender:
             fill_value=0
         )
         
-        matrix = (matrix > 0).astype(int)
+        matrix = np.log1p(matrix)
         
         self.user_item_matrix = matrix
         
@@ -140,21 +140,113 @@ class CollaborativeRecommender:
         return result
 
 
+def generate_recommendations(
+    interactions_df,
+    user_id,
+    entity_type='product',
+    top_n=5,
+    include_evaluation=False
+):
 
-def get_recommendations(interactions_df, user_id, entity_type='product', top_n=5):
-    
     recommender = CollaborativeRecommender()
-    
-    matrix = recommender.create_user_item_matrix(interactions_df, entity_type)
-    
+
+    matrix = recommender.create_user_item_matrix(
+        interactions_df,
+        entity_type
+    )
+
     if matrix is None or matrix.empty:
         return {
             'success': False,
             'message': 'Not enough interaction data'
         }
-    
+
     recommender.calculate_user_similarity()
-    
-    recommendations = recommender.get_recommendations(user_id, top_n)
-    
+
+    recommendations = recommender.get_recommendations(
+        user_id,
+        top_n
+    )
+
+    if include_evaluation:
+
+        recommendations['evaluation'] = evaluate_recommender(
+            interactions_df,
+            entity_type,
+            top_n
+        )
+
     return recommendations
+
+
+def evaluate_recommender(interactions_df, entity_type='product', top_n=5):
+
+    hits = 0
+    total = 0
+
+    users = interactions_df['userId'].unique()
+
+    for user_id in users:
+
+        user_data = interactions_df[
+            (interactions_df['userId'] == user_id) &
+            (interactions_df['entityData.entityType'] == entity_type)
+        ]
+
+        # Need at least 2 interactions
+        if len(user_data) < 2:
+            continue
+
+        # Hide last interaction
+        test_row = user_data.iloc[-1]
+        test_item = test_row['entityData.entityId']
+
+        # Remaining interactions for training
+        train_user_data = user_data.iloc[:-1]
+
+        # Combine with all other users
+        other_data = interactions_df[
+            interactions_df['userId'] != user_id
+        ]
+
+        train_df = pd.concat([other_data, train_user_data])
+
+        # Train recommender
+        recommender = CollaborativeRecommender()
+
+        matrix = recommender.create_user_item_matrix(
+            train_df,
+            entity_type
+        )
+
+        if matrix is None or user_id not in matrix.index:
+            continue
+
+        recommender.calculate_user_similarity()
+
+        recs = recommender.get_recommendations(
+            user_id,
+            top_n
+        )
+
+        if recs['success']:
+
+            recommended_items = [
+                r['item_id']
+                for r in recs['recommendations']
+            ]
+
+            # Check if hidden item was recommended
+            if str(test_item) in recommended_items:
+                hits += 1
+
+            total += 1
+
+    hit_rate = hits / total if total > 0 else 0
+
+    return {
+        'success': True,
+        'users_evaluated': total,
+        'hits': hits,
+        'hit_rate': round(hit_rate, 4)
+    }

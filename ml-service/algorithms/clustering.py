@@ -1,5 +1,6 @@
 
 from sklearn.cluster import KMeans
+from sklearn.metrics import silhouette_score
 from config import config
 
 class UserSegmentation:
@@ -20,8 +21,10 @@ class UserSegmentation:
         )
         
         cluster_labels = self.model.fit_predict(X)
-        
+
         self.cluster_centers = self.model.cluster_centers_
+        
+        self.silhouette_score = silhouette_score(X, cluster_labels)
         
         clusters = []
         for cluster_id in range(self.n_clusters):
@@ -53,30 +56,31 @@ class UserSegmentation:
             'success': True,
             'total_users': len(df),
             'n_clusters': self.n_clusters,
+            'silhouette_score': round(self.silhouette_score, 4),
             'clusters': clusters
         }
     
     def _get_label(self, cluster_data):
-        
+
         avg_sessions = cluster_data['total_sessions'].mean()
         avg_interactions = cluster_data['total_interactions'].mean()
         avg_duration = cluster_data['avg_duration'].mean()
         bounce_rate = cluster_data['bounce_rate'].mean()
-        
-        
+
         if bounce_rate > 70 and avg_duration < 60:
             return "High Bounce Users"
-        
-        if avg_sessions > 10 and avg_interactions > 80:
+
+        elif avg_sessions > 10 and avg_interactions > 80:
             return "Power Users"
-        
-        if avg_sessions > 5 and avg_duration > 200:
+
+        elif avg_sessions > 5 and avg_duration > 200:
             return "Active Users"
-        
-        if avg_sessions > 2:
+
+        elif avg_sessions > 2 and avg_sessions <= 5:
             return "Casual Browsers"
-        
-        return "Inactive Users"
+
+        else:
+            return "Inactive Users"
     
     def predict_cluster(self, X):
         

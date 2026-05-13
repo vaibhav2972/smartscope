@@ -190,23 +190,6 @@ const ChurnRisk = () => {
 													</div>
 												</div>
 
-												<div className="text-center">
-													<div className="text-sm text-gray-400 mb-1">
-														Days Inactive
-													</div>
-													<div className="text-2xl font-bold text-white">
-														{pred.days_inactive}
-													</div>
-												</div>
-
-												<div className="text-center">
-													<div className="text-sm text-gray-400 mb-1">
-														Sessions
-													</div>
-													<div className="text-2xl font-bold text-white">
-														{pred.total_sessions}
-													</div>
-												</div>
 											</div>
 										</div>
 									</div>

@@ -146,9 +146,9 @@ class UserIntelligenceEngine:
                 return {'risk_level': 'Unknown', 'probability': 0}
             
             return {
-                'risk_level': user_pred['risk_level'],
-                'probability': user_pred['churn_probability'],
-                'days_inactive': user_pred['days_inactive']
+                'risk_level': user_pred.get('risk_level', 'Unknown'),
+                'probability': user_pred.get('churn_probability', 0),
+                'days_inactive': user_pred.get('days_inactive', 0)
             }
         except:
             return {'risk_level': 'Unknown', 'probability': 0}

@@ -237,10 +237,6 @@ const UserLifecycle = () => {
 											<div className="flex gap-4">
 												{[
 													{
-														label: "Days Since Signup",
-														value: user.days_since_signup || 0,
-													},
-													{
 														label: "Last Active",
 														value: `${user.days_since_last_session}d`,
 													},
