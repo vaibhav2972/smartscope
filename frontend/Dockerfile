@@ -1,13 +1,20 @@
-FROM node:18
+FROM node:22
 
 WORKDIR /app
 
 COPY package*.json ./
-RUN npm install
+
+# important fix for native deps
+RUN npm install --legacy-peer-deps
 
 COPY . .
+
 RUN npm run build
+
+FROM nginx:alpine
+
+COPY --from=0 /app/dist /usr/share/nginx/html
 
 EXPOSE 80
 
-CMD ["node", "server.js"]
+CMD ["nginx", "-g", "daemon off;"]
