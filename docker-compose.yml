@@ -1,5 +1,4 @@
 services:
-
   backend:
     build: ./backend
     container_name: backend
@@ -14,6 +13,8 @@ services:
     container_name: ml-service
     ports:
       - "5000:5000"
+    env_file:
+      - ./ml-service/.env
     restart: always
 
   frontend:
