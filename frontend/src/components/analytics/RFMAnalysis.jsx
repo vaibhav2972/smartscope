@@ -167,7 +167,7 @@ const RFMAnalysis = () => {
 												className="hover:bg-gray-800/60 transition-colors"
 											>
 												<td className="px-6 py-4 text-sm font-medium text-white">
-													{user.userId.slice(-12)}
+													{user.userId}
 												</td>
 
 												<td className="px-6 py-4">

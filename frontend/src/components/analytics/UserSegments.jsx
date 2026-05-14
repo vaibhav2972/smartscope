@@ -181,7 +181,7 @@ const UserSegments = () => {
 																	key={userId}
 																	className={`px-3 py-1 ${colors.bg} ${colors.text} rounded-full text-sm font-medium`}
 																>
-																	{userId.slice(-8)}
+																	{userId}
 																</span>
 															))}
 														</div>

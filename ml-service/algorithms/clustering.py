@@ -67,7 +67,7 @@ class UserSegmentation:
         avg_duration = cluster_data['avg_duration'].mean()
         bounce_rate = cluster_data['bounce_rate'].mean()
 
-        if bounce_rate > 70 and avg_duration < 60:
+        if bounce_rate > 60 and avg_duration < 60:
             return "High Bounce Users"
 
         elif avg_sessions > 10 and avg_interactions > 80:

@@ -162,7 +162,7 @@ const Dashboard = () => {
                     </div>
                     <div className="flex-1">
                       <div className="font-semibold text-white text-sm">
-                        User {user.user_id.slice(-6)}
+                        User {user.user_id}
                       </div>
                       <div className="text-xs text-gray-400">
                         {user.score.toFixed(1)} points

@@ -163,7 +163,7 @@ const ChurnRisk = () => {
 											<div className="flex-1">
 												<div className="flex items-center gap-3 mb-2">
 													<span className="font-semibold text-white">
-														User {pred.user_id.slice(-8)}
+														User {pred.user_id}
 													</span>
 													<Badge variant={getRiskVariant(pred.risk_level)}>
 														{pred.risk_level}

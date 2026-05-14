@@ -215,7 +215,7 @@ const UserLifecycle = () => {
 											<div className="flex-1">
 												<div className="flex items-center gap-3 mb-2">
 													<span className="font-semibold text-white">
-														User {user.user_id.slice(-8)}
+														User {user.user_id}
 													</span>
 													<span className="text-sm text-gray-300">
 														{getTrendIcon(user.engagement_trend)}{" "}

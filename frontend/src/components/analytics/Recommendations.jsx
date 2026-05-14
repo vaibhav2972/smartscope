@@ -180,7 +180,7 @@ const Recommendations = () => {
 												>
 													<div className="flex justify-between">
 														<div className="text-white">
-															User {u.user_id.slice(-6)}
+															User {u.user_id}
 														</div>
 														<div className="text-indigo-400 font-bold">
 															{similarity.toFixed(1)}%

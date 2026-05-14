@@ -152,7 +152,7 @@ const EngagementLeaderboard = () => {
 
 												<td className="px-6 py-4 whitespace-nowrap">
 													<div className="text-sm font-medium text-white">
-														{user.user_id.slice(-12)}
+														{user.user_id}
 													</div>
 												</td>
 
