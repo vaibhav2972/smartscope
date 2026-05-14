@@ -10,7 +10,11 @@ const googleauth = async (req, res) => {
 		const accessToken = await generateAccessToken(user);
 		const refreshToken = await generateRefreshToken(user);
 
-		const options = { httpOnly: true, secure: true };
+		const options = {
+			httpOnly: true,
+			secure: false,
+			sameSite: "lax",
+		};
 
 		res
 			.cookie("accessToken", accessToken, options)
